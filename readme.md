@@ -16,3 +16,8 @@
 node版本>=18
 
 执行 pnpm install
+
+
+#   备注
+后端接入过程
+https://cn.vitejs.dev/guide/backend-integration.html
