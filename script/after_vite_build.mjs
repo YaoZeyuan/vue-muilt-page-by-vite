@@ -22,7 +22,7 @@ async function asyncRunner() {
   shelljs.mv(path.resolve(viteOutputRootPath, 'assets'), targetDirPath)
   shelljs.mv(
     path.resolve(viteOutputRootPath, '.vite/manifest.json'),
-    path.resolve(targetDirPath, `manifest-${packageJson.version}.json`)
+    path.resolve(targetDirPath, `manifest.json`)
   )
   console.log(`静态资源迁移完毕`)
 
