@@ -1,7 +1,7 @@
 import * as fs from 'node:fs'
 import * as path from 'node:path'
 import shelljs from 'shelljs'
-import { fileURLToPath, URL } from 'node:url'
+import { fileURLToPath } from 'node:url'
 
 const projectRootPath = path.resolve(fileURLToPath(import.meta.url), '..', '..')
 
