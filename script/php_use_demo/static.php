@@ -4,21 +4,22 @@ class StaticRes
 {
     static protected $inst;
     static protected $config;
-    static protected $mapJson;
     // 需要指定manifest.json的路径. 支持本地路径/cdn地址两种形式
+    // 示例: "/home/yao/www/github/vue-muilt-page-by-vite/dist/0.0.3/manifest.json";
     static protected $manifestUri = "/demo/0.0.3/manifest.json";
 
-
-    // 如果是cdn配置, 会将下载后的manifest.json文件缓存在这里方便后续读取. 默认使用系统缓存路径
-    static private function getCacheDir(){
-        return sys_get_temp_dir() . DIRECTORY_SEPARATOR .  "map-json";
+    /**
+     * 生成manifest.json缓存路径, 以便当$manifestUri为cdn路径时进行缓存, 
+     */
+     static private function getCacheDir() {
+        return sys_get_temp_dir() . DIRECTORY_SEPARATOR .  "map-json" . DIRECTORY_SEPARATOR;
     }
 
 
     /**
+     * 单例模式
      * @return StaticRes
      */
-
     static public function Instance()
     {
         if (empty(self::$config)) {
@@ -27,8 +28,8 @@ class StaticRes
         if (empty(self::$inst)) {
             self::$inst = new self();
         }
-        if (!file_exists($this->getCacheDir())) {
-            mkdir($this->getCacheDir(), 0777, true);
+        if (file_exists(self::getCacheDir()) === false) {
+            mkdir(self::getCacheDir(), 0777, true);
         }
         return self::$inst;
     }
@@ -49,9 +50,8 @@ class StaticRes
         // <link rel="stylesheet" crossorigin href="/assets/home-FdWSi62J.css">
         if(empty(self::$config)){
             // 首次启动需要加载manifest.json配置
-            $this->getAutoStaticByFile();
+            self::$config = self::getAutoStaticByFile(self::$manifestUri);
         }
-
 
         // 线上以版本号为标识，每个map.json都是唯一的，获取并缓存.
         $staticConfig = self::$config[$fileUri];
@@ -104,7 +104,7 @@ class StaticRes
      */
     protected function getAutoStaticByFile($static_url)
     {
-        $filePath = $this->getCacheDir() . md5($static_url) . '.json';
+        $filePath = self::getCacheDir() . md5($static_url) . '.json';
         if (file_exists($filePath)) {
             $mapJson = file_get_contents($filePath);
             $mapJson = json_decode($mapJson, true);
@@ -118,3 +118,7 @@ class StaticRes
         return $mapJson;
     }
 }
+
+// 使用示例
+// $a = StaticRes::Instance();
+// echo $a->getVueStaticContent("src/pages/home/index.html", true);
