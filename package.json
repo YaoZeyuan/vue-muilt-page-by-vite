@@ -10,7 +10,8 @@
     "build-only": "vite build && node script/after_vite_build.mjs",
     "type-check": "vue-tsc --noEmit -p tsconfig.app.json --composite false",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
-    "format": "prettier --write src/"
+    "format": "prettier --write src/",
+    "preview-static": "serve dist"
   },
   "dependencies": {
     "axios": "^1.6.2",
@@ -31,6 +32,7 @@
     "eslint-plugin-vue": "^9.17.0",
     "npm-run-all2": "^6.1.1",
     "prettier": "^3.0.3",
+    "serve": "^14.2.1",
     "shelljs": "^0.8.5",
     "typescript": "~5.2.0",
     "vite": "^5.0.2",

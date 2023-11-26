@@ -41,6 +41,17 @@ export default defineConfig(({ command, mode, isSsrBuild, isPreview }) => {
       port: port
     },
     build: {
+      experimental: {
+        renderBuiltUrl(filename: string, { hostType }: { hostType: 'js' | 'css' | 'html' }) {
+          // 自定义静态资源路径
+          return `/${packageJson.version}/`
+          if (['js', 'css'].includes(hostType)) {
+            return { runtime: `window.__getFile(${JSON.stringify(filename)})` }
+          } else {
+            return { relative: true }
+          }
+        }
+      },
       rollupOptions: {
         input: {
           ...pagesUriConfig
