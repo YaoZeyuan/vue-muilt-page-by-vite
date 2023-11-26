@@ -13,6 +13,9 @@ const projectRootPath = path.resolve(fileURLToPath(import.meta.url),
 export default defineConfig(({ command, mode, isSsrBuild, isPreview }) => {
   // 通过函数的形式生成配置, 方便根据实际参数进行自定义
   const port = 3000
+  // 线上前端cdn前缀
+  const productionPublicPath = '/'
+  const isBuild = mode === "production"
 
   // 读取package.json中的版本号
   const packageJsonUri = path.resolve(projectRootPath, 'package.json')
@@ -40,17 +43,19 @@ export default defineConfig(({ command, mode, isSsrBuild, isPreview }) => {
     server: {
       port: port
     },
+    // 当线上构建时, 主动添加版本号和静态资源前缀
+    base: isBuild ? `${productionPublicPath}/${packageJson.version}/` : "/",
     build: {
       experimental: {
-        renderBuiltUrl(filename: string, { hostType }: { hostType: 'js' | 'css' | 'html' }) {
-          // 自定义静态资源路径
-          return `/${packageJson.version}/`
-          if (['js', 'css'].includes(hostType)) {
-            return { runtime: `window.__getFile(${JSON.stringify(filename)})` }
-          } else {
-            return { relative: true }
-          }
-        }
+        // renderBuiltUrl(filename: string, { hostType }: { hostType: 'js' | 'css' | 'html' }) {
+        //   // 自定义静态资源路径
+        //   return `/${packageJson.version}/`
+        //   if (['js', 'css'].includes(hostType)) {
+        //     return { runtime: `window.__getFile(${JSON.stringify(filename)})` }
+        //   } else {
+        //     return { relative: true }
+        //   }
+        // }
       },
       rollupOptions: {
         input: {
