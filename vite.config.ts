@@ -20,15 +20,15 @@ export default defineConfig(({ command, mode, isSsrBuild, isPreview }) => {
   console.log('当前package.json中记录的版本号为 => ', packageJson.version)
 
   // 待编译的项目
-  const targetObj = {
-    home: path.resolve(projectRootPath, 'src/pages/home/index.html'),
+  const pagesUriConfig = {
+    demo: path.resolve(projectRootPath, 'src/pages/demo/index.html'),
     question: path.resolve(projectRootPath, 'src/pages/question/index.html'),
   }
 
   console.log(`页面对应地址 => `)
-  for (const key of Object.keys(targetObj)) {
+  for (const key of Object.keys(pagesUriConfig)) {
     // @ts-ignore
-    const fileUri = targetObj[key].split(projectRootPath).pop()
+    const fileUri = pagesUriConfig[key].split(projectRootPath).pop()
     console.log(`${key} => http://localhost:${port}${fileUri}`)
   }
 
@@ -43,7 +43,7 @@ export default defineConfig(({ command, mode, isSsrBuild, isPreview }) => {
     build: {
       rollupOptions: {
         input: {
-          ...targetObj
+          ...pagesUriConfig
         }
       },
       manifest: true
