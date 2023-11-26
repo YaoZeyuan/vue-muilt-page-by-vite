@@ -20,6 +20,8 @@ async function asyncRunner() {
   shelljs.mkdir('-p', targetDirPath)
   console.log(`将生成的静态资源移动到 ${targetDirPath} 中`)
   shelljs.mv(path.resolve(viteOutputRootPath, 'assets'), targetDirPath)
+  shelljs.mv(path.resolve(viteOutputRootPath, 'src'), targetDirPath)
+  shelljs.mv(path.resolve(viteOutputRootPath, 'favicon.ico'), targetDirPath)
   shelljs.mv(
     path.resolve(viteOutputRootPath, '.vite/manifest.json'),
     path.resolve(targetDirPath, `manifest.json`)
